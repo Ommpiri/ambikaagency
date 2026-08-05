@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect, useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
-import storefrontEnhancedImg from '../assets/storefront_enhanced.jpg';
 
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null);
@@ -110,15 +109,8 @@ export function Hero() {
       className="relative w-full min-h-[100dvh] flex flex-col justify-between overflow-hidden bg-[#0a0a0a] text-white select-none pt-24 sm:pt-32 md:pt-40 pb-8 sm:pb-12"
       data-testid="section-hero"
     >
-      {/* ─── Dual-Video & Fallback Background ─── */}
+      {/* ─── Dual-Video Background (Seamless 700ms Crossfade Looping) ─── */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden flex items-center justify-center bg-black">
-        {/* High-res Fallback Image (shows immediately if video is loading or blocked) */}
-        <img 
-          src={storefrontEnhancedImg} 
-          alt="Ambika Agency Balasore Showroom" 
-          className="absolute inset-0 w-full h-full object-cover object-center scale-100 brightness-[0.75] contrast-[1.05] saturate-[1.05]"
-        />
-
         {/* Layer A Video */}
         <video
           ref={videoARef}
