@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Ambika Agency"
+description = "A luxury landing page for Ambika Agency, a sanitaryware and plumbing supply shop in Balasore, Odisha, India. Matches the editorial, quiet-luxury aesthetic of Nobili Rubinetterie — large-format product photography, restrained palette, confident whitespace, GSAP scroll reveals, and Lenis smooth scroll."
+version = "1.0.0"
+id = "artifacts/ambika-agency"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21280
+
+[services.development]
+run = "pnpm --filter @workspace/ambika-agency run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ambika-agency", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/ambika-agency/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21280"
+BASE_PATH = "/"
