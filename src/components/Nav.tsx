@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Phone, Menu, X } from 'lucide-react';
+import { Phone, Menu, X, PenLine } from 'lucide-react';
+import { Link } from 'wouter';
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -92,6 +93,18 @@ export function Nav() {
           >
             Showroom
           </button>
+          <Link href="/review">
+            <span
+              className={`inline-flex items-center gap-1.5 font-sans text-xs tracking-[0.2em] uppercase font-medium transition-colors cursor-pointer hover:opacity-100 border px-3 py-1.5 rounded-none ${
+                scrolled
+                  ? 'text-primary border-primary/40 hover:bg-primary hover:text-white'
+                  : 'text-white/80 border-white/25 hover:text-white hover:border-white/60'
+              }`}
+            >
+              <PenLine className="w-3 h-3" />
+              Write a Review
+            </span>
+          </Link>
         </div>
 
         {/* Right: Phone Button */}
@@ -148,6 +161,12 @@ export function Nav() {
           >
             Showroom
           </button>
+          <Link href="/review" onClick={() => setMobileOpen(false)}>
+            <span className="flex items-center gap-2 font-sans text-sm tracking-[0.2em] uppercase font-medium text-primary py-1 cursor-pointer">
+              <PenLine className="w-4 h-4" />
+              Write a Review
+            </span>
+          </Link>
           <a
             href="tel:+917381918465"
             className="inline-flex items-center justify-center gap-2 mt-2 px-5 py-3 rounded-none bg-foreground text-background font-sans text-xs tracking-wider uppercase font-bold min-h-[44px]"
