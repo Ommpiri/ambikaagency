@@ -19,8 +19,8 @@ export function Hero() {
     if (!videoA || !videoB) return;
 
     // Start video playback at half speed for a cinematic feel
-    videoA.playbackRate = 0.65;
-    videoB.playbackRate = 0.65;
+    videoA.playbackRate = 0.5;
+    videoB.playbackRate = 0.5;
     videoA.play().catch(() => {});
 
     let isCrossfading = false;
@@ -137,9 +137,9 @@ export function Hero() {
           <source src={`${import.meta.env.BASE_URL}hero-video.mp4#t=0,8`} type="video/mp4" />
         </video>
 
-        {/* Mobile-optimized dual gradients for readable text on screens of all sizes */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/40 to-black/70 z-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent z-10 pointer-events-none" />
+        {/* Lighter gradients for a brighter hero while keeping text readable */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/20 to-black/40 z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/25 to-transparent z-10 pointer-events-none" />
       </div>
 
       {/* ─── Hero Core Content ─── */}
