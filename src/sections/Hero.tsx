@@ -25,7 +25,7 @@ export function Hero() {
 
     const checkTime = () => {
       const currentVideo = activeVideo === 0 ? videoA : videoB;
-      const targetTime = 6.3; // Trigger seamless crossfade 700ms before 7.0s mark
+      const targetTime = 7.3; // Trigger seamless crossfade 700ms before 8.0s mark
 
       if (currentVideo && currentVideo.currentTime >= targetTime && !isCrossfading) {
         isCrossfading = true;
@@ -120,7 +120,7 @@ export function Hero() {
           className="absolute inset-0 w-full h-full object-cover object-center scale-100 brightness-[1.08] contrast-[1.05] saturate-[1.05] transition-opacity duration-700 ease-in-out"
           data-testid="video-hero-layer-a"
         >
-          <source src={`${import.meta.env.BASE_URL}hero-video.mp4#t=0,7`} type="video/mp4" />
+          <source src={`${import.meta.env.BASE_URL}hero-video.mp4#t=0,8`} type="video/mp4" />
         </video>
 
         {/* Layer B Video */}
@@ -132,7 +132,7 @@ export function Hero() {
           className="absolute inset-0 w-full h-full object-cover object-center scale-100 brightness-[1.08] contrast-[1.05] saturate-[1.05] transition-opacity duration-700 ease-in-out"
           data-testid="video-hero-layer-b"
         >
-          <source src={`${import.meta.env.BASE_URL}hero-video.mp4#t=0,7`} type="video/mp4" />
+          <source src={`${import.meta.env.BASE_URL}hero-video.mp4#t=0,8`} type="video/mp4" />
         </video>
 
         {/* Mobile-optimized dual gradients for readable text on screens of all sizes */}
