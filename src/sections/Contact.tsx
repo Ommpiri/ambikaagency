@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, MessageCircle, MapPin, Clock, Mail } from 'lucide-react';
+import { Phone, MessageCircle, MapPin, Clock, Mail, Instagram } from 'lucide-react';
 
 // Sanitize user inputs to prevent XSS injection
 const sanitizeInput = (str: string): string => {
@@ -93,6 +93,17 @@ export function Contact() {
                 <MessageCircle className="w-4 h-4 shrink-0" strokeWidth={1.5} />
                 <span>WhatsApp Inquiry</span>
               </a>
+
+              {/* Instagram Button */}
+              <a
+                href="https://www.instagram.com/ambikaagency_/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-3 px-6 py-4 min-h-[44px] rounded-none border border-foreground text-foreground bg-transparent font-sans text-xs tracking-[0.15em] uppercase font-bold transition-colors duration-300 hover:bg-foreground hover:text-background cursor-pointer active:scale-[0.98]"
+              >
+                <Instagram className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                <span>Follow on Instagram</span>
+              </a>
             </div>
 
             {/* Confirmed Business Details */}
@@ -123,6 +134,16 @@ export function Contact() {
                   <p className="text-[10px] tracking-[0.2em] font-bold text-primary uppercase mb-1">Email Address</p>
                   <a href="mailto:ambikaagencybls@gmail.com" className="hover:underline font-medium text-foreground">
                     ambikaagencybls@gmail.com
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Instagram className="w-4.5 h-4.5 text-primary mt-1 shrink-0" strokeWidth={1.5} />
+                <div>
+                  <p className="text-[10px] tracking-[0.2em] font-bold text-primary uppercase mb-1">Instagram</p>
+                  <a href="https://www.instagram.com/ambikaagency_/" target="_blank" rel="noopener noreferrer" className="hover:underline font-medium text-foreground">
+                    @ambikaagency_
                   </a>
                 </div>
               </div>
