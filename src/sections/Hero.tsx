@@ -19,8 +19,8 @@ export function Hero() {
     if (!videoA || !videoB) return;
 
     // Start video playback at half speed for a cinematic feel
-    videoA.playbackRate = 0.5;
-    videoB.playbackRate = 0.5;
+    videoA.playbackRate = 0.65;
+    videoB.playbackRate = 0.65;
     videoA.play().catch(() => {});
 
     let isCrossfading = false;
