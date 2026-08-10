@@ -138,8 +138,8 @@ export function Hero() {
         </video>
 
         {/* Lighter gradients for a brighter hero while keeping text readable */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/20 to-black/40 z-10 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/25 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/10 to-black/20 z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/15 to-transparent z-10 pointer-events-none" />
       </div>
 
       {/* ─── Hero Core Content ─── */}
