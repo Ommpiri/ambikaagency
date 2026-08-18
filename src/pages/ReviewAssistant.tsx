@@ -86,33 +86,62 @@ Customer name (optional, first name only if given): ${name.trim() || '(no name)'
 
 Generate exactly 3 review variations. Separate each variation with the exact delimiter: ---SPLIT---`;
 
-  const res = await fetch(
-    'https://api.groq.com/openai/v1/chat/completions',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.95,
-        max_tokens: 600,
-      }),
-    }
-  );
+  const MODELS_TO_TRY = [
+    'openai/gpt-oss-120b',
+    'openai/gpt-oss-20b',
+    'qwen/qwen3.6-27b',
+    'groq/compound-mini',
+    'llama-3.3-70b-versatile',
+    'llama-3.1-8b-instant',
+  ];
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({})) as any;
-    throw new Error(err?.error?.message ?? `Groq API error: ${res.status}`);
+  let lastErrorMessage = '';
+
+  for (const model of MODELS_TO_TRY) {
+    try {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.8,
+          max_tokens: 600,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = (await res.json().catch(() => ({}))) as any;
+        const msg = err?.error?.message ?? `Groq API error: ${res.status}`;
+        lastErrorMessage = msg;
+        console.warn(`Groq model ${model} failed:`, msg);
+        continue;
+      }
+
+      const data = await res.json();
+      let raw: string = data?.choices?.[0]?.message?.content ?? '';
+
+      // Strip <think> reasoning tags if present
+      raw = raw.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+
+      const parts = raw
+        .split('---SPLIT---')
+        .map((p: string) => p.trim())
+        .filter(Boolean);
+
+      if (parts.length > 0) {
+        return parts.slice(0, 3);
+      }
+    } catch (e: any) {
+      lastErrorMessage = e?.message ?? 'Network error';
+      console.warn(`Groq model ${model} request error:`, e);
+    }
   }
 
-  const data = await res.json();
-  const raw: string = data?.choices?.[0]?.message?.content ?? '';
-  const parts = raw.split('---SPLIT---').map((p: string) => p.trim()).filter(Boolean);
-  if (!parts.length) throw new Error('No review text generated. Please try again.');
-  return parts.slice(0, 3);
+  throw new Error(lastErrorMessage || 'Failed to generate reviews. Please try again.');
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
