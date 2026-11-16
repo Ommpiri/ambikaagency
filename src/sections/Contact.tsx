@@ -1,64 +1,6 @@
-import React, { useState } from 'react';
 import { Phone, MessageCircle, MapPin, Clock, Mail, Instagram } from 'lucide-react';
 
-// Sanitize user inputs to prevent XSS injection
-const sanitizeInput = (str: string): string => {
-  return str.replace(/[<>&"'`]/g, (char) => {
-    const map: Record<string, string> = {
-      '<': '&lt;',
-      '>': '&gt;',
-      '&': '&amp;',
-      '"': '&quot;',
-      "'": '&#x27;',
-      '`': '&#x60;'
-    };
-    return map[char] || char;
-  });
-};
-
 export function Contact() {
-  const [focusedField, setFocusedField] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ name: '', phone: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
-  const [lastSubmitTime, setLastSubmitTime] = useState<number>(0);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  const handleFocus = (name: string) => setFocusedField(name);
-  const handleBlur = () => setFocusedField(null);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const sanitizedVal = sanitizeInput(e.target.value);
-    setFormData(prev => ({ ...prev, [e.target.name]: sanitizedVal }));
-    if (errorMessage) setErrorMessage(null);
-  };
-
-  const isLabelActive = (name: keyof typeof formData) => focusedField === name || formData[name].length > 0;
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Rate-limiting check: block submissions within 10 seconds of previous submission
-    const now = Date.now();
-    if (now - lastSubmitTime < 10000) {
-      setErrorMessage('Please wait a few seconds before submitting another inquiry.');
-      return;
-    }
-
-    if (!formData.name.trim() || !formData.phone.trim()) {
-      setErrorMessage('Please provide your name and contact phone number.');
-      return;
-    }
-
-    setLastSubmitTime(now);
-    setSubmitted(true);
-    setErrorMessage(null);
-
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', phone: '', message: '' });
-    }, 4000);
-  };
-
   return (
     <section id="contact" className="py-16 sm:py-24 md:py-32 px-5 sm:px-8 w-full max-w-7xl mx-auto bg-background border-t border-border/40 pb-20" data-testid="section-contact">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 mb-16">
@@ -66,10 +8,10 @@ export function Contact() {
         <div className="flex flex-col justify-between">
           <div>
             <span className="font-sans text-[11px] tracking-[0.25em] text-primary font-bold uppercase block mb-3">
-              Direct Showroom Contact
+              Ambika Agency · Balasore
             </span>
             <h2 className="font-sans text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-8" data-testid="text-contact-headline">
-              Begin a conversation.
+              Visit or call the showroom
             </h2>
             
             {/* Clickable Action Buttons */}
@@ -160,103 +102,10 @@ export function Contact() {
           </div>
         </div>
 
-        {/* Right Column: Specification Request Form */}
-        <div className="flex flex-col justify-end bg-[#f8f7f4]/60 p-6 sm:p-10 rounded-none border border-border/60">
-          <h3 className="font-sans text-lg font-bold text-foreground mb-2">
-            Submit a Specification Request
-          </h3>
-          <p className="font-sans text-xs text-muted-foreground mb-8">
-            Provide your project details or pump head requirements for direct contractor estimates.
-          </p>
-
-          <form 
-            className="w-full space-y-8 sm:space-y-10" 
-            onSubmit={handleSubmit}
-            data-testid="form-contact"
-          >
-            <div className="relative group pt-2">
-              <label 
-                htmlFor="name" 
-                className={`absolute left-0 transition-all duration-300 font-sans tracking-[0.1em] text-xs uppercase cursor-text ${
-                  isLabelActive('name') ? '-top-2 text-primary font-bold' : 'top-5 text-muted-foreground'
-                }`}
-              >
-                Full Name / Contractor Name
-              </label>
-              <input 
-                type="text" 
-                id="name" 
-                name="name"
-                required
-                value={formData.name}
-                onChange={handleChange}
-                onFocus={() => handleFocus('name')}
-                onBlur={handleBlur}
-                className="w-full bg-transparent border-0 border-b border-border py-2 px-0 font-sans text-foreground text-base sm:text-sm focus:ring-0 focus:border-primary transition-colors duration-300 outline-none"
-                data-testid="input-contact-name"
-              />
-            </div>
-
-            <div className="relative group pt-2">
-              <label 
-                htmlFor="phone" 
-                className={`absolute left-0 transition-all duration-300 font-sans tracking-[0.1em] text-xs uppercase cursor-text ${
-                  isLabelActive('phone') ? '-top-2 text-primary font-bold' : 'top-5 text-muted-foreground'
-                }`}
-              >
-                Mobile Number
-              </label>
-              <input 
-                type="tel" 
-                inputMode="tel"
-                id="phone" 
-                name="phone"
-                required
-                value={formData.phone}
-                onChange={handleChange}
-                onFocus={() => handleFocus('phone')}
-                onBlur={handleBlur}
-                className="w-full bg-transparent border-0 border-b border-border py-2 px-0 font-sans text-foreground text-base sm:text-sm focus:ring-0 focus:border-primary transition-colors duration-300 outline-none"
-                data-testid="input-contact-phone"
-              />
-            </div>
-
-            <div className="relative group pt-2">
-              <label 
-                htmlFor="message" 
-                className={`absolute left-0 transition-all duration-300 font-sans tracking-[0.1em] text-xs uppercase cursor-text ${
-                  isLabelActive('message') ? '-top-2 text-primary font-bold' : 'top-5 text-muted-foreground'
-                }`}
-              >
-                Inquiry / Borewell Depth / Brand Requirement
-              </label>
-              <textarea 
-                id="message" 
-                name="message"
-                rows={3}
-                value={formData.message}
-                onChange={handleChange}
-                onFocus={() => handleFocus('message')}
-                onBlur={handleBlur}
-                className="w-full bg-transparent border-0 border-b border-border py-2 px-0 font-sans text-foreground text-base sm:text-sm focus:ring-0 focus:border-primary transition-colors duration-300 outline-none resize-none"
-                data-testid="input-contact-message"
-              />
-            </div>
-
-            {submitted ? (
-              <div className="p-4 bg-foreground text-background rounded-none font-sans text-xs font-semibold text-center">
-                Inquiry received. Our team will contact you shortly.
-              </div>
-            ) : (
-              <button 
-                type="submit"
-                className="w-full border border-foreground text-foreground bg-transparent font-sans text-xs tracking-[0.2em] font-bold uppercase py-4 min-h-[44px] rounded-none transition-colors duration-300 hover:bg-foreground hover:text-background active:scale-[0.98] focus-visible:outline-none cursor-pointer"
-                data-testid="button-contact-submit"
-              >
-                Submit Specification Inquiry
-              </button>
-            )}
-          </form>
+        <div className="self-start border border-border bg-secondary/40 p-6 sm:p-10">
+          <h3 className="mb-3 font-serif text-3xl font-semibold">Send us your material list</h3>
+          <p className="mb-5 text-sm text-muted-foreground">Send the sizes and quantities you need on WhatsApp. For a replacement, add a photo. For a borewell pump, include the bore depth if you know it.</p>
+          <a href="https://wa.me/918144532282?text=Hello%20Ambika%20Agency%2C%20I%27d%20like%20a%20quote." target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center bg-foreground px-4 text-sm text-background">Open WhatsApp</a>
         </div>
       </div>
 

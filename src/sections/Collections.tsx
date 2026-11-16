@@ -11,33 +11,33 @@ const collections = [
     id: 'pipes',
     category: 'PIPES & FITTINGS',
     name: 'Ori-Plast & Hari Plast Systems',
-    descriptor: 'Heavy-gauge CPVC, UPVC pipes, brass wheel valves, and fitting accessories. Full bore sizes in ready counter stock.',
+    descriptor: 'CPVC and uPVC pipes, fittings, and brass valves. Bring your pipe size or a sample fitting.',
     image: nalaImg,
-    alt: 'Ori-Plast and Hari Plast CPVC fittings and brass valves'
+    alt: 'Pipes, fittings, and valves'
   },
   {
     id: 'sanitaryware',
     category: 'SANITARYWARE & CERAMICS',
     name: 'Parryware, Hindware & Jaquar Collection',
-    descriptor: 'Luxury ceramic WCs, Jaquar sanitaryware, LED mirror vanities, countertop basins, and vitreous china sanitaryware. Ready stock for immediate contractor pickup.',
+    descriptor: 'Toilets, basins, mirrors, and vanities. Visit the showroom to compare finishes and sizes.',
     image: bathroomDisplayImg,
-    alt: 'Parryware, Hindware and Jaquar luxury bathroom ceramic display'
+    alt: 'Bathroom showroom display'
   },
   {
     id: 'borewell',
     category: 'BOREWELL & SUBMERSIBLE PUMPS',
     name: 'KSB, V-Guard & Texmo Pumps',
-    descriptor: 'Submersible pump sets, oil-filled motors, and column pipes. Sized to match your bore depth and local water tables across Balasore.',
+    descriptor: 'Submersible pumps, motors, and column pipes. Tell us your bore depth and how you use the water.',
     image: dharaImg,
-    alt: 'KSB V-Guard Texmo stainless submersible borewell pump set'
+    alt: 'Submersible pump display'
   },
   {
     id: 'fittings',
     category: 'BATH FITTINGS & ADHESIVES',
     name: 'Prayag & Pidilite',
-    descriptor: 'Concealed wall mixers, brass taps, waste couplings, and Pidilite solvent cements. Ready to fit standard Indian plumbing layouts.',
+    descriptor: 'Wall mixers, taps, waste fittings, and solvent cement. Ask us to match the fitting to your setup.',
     image: vimalImg,
-    alt: 'Prayag chrome brass bath fittings and Pidilite sealants'
+    alt: 'Bath fittings display'
   }
 ];
 
@@ -83,10 +83,10 @@ export function Collections() {
       {/* Section Header */}
       <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 md:mb-20">
         <p className="font-sans text-[11px] tracking-[0.25em] text-primary font-bold uppercase mb-3">
-          Core Inventory Categories
+          Pipes, bathware & pumps
         </p>
         <h2 className="font-sans text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
-          What we stock in Balasore
+          Shop by category
         </h2>
       </div>
 
@@ -94,7 +94,7 @@ export function Collections() {
         {collections.map((item) => (
           <div 
             key={item.id} 
-            className="collection-item flex flex-col group cursor-pointer" 
+            className="collection-item flex flex-col group" 
             data-testid={`card-collection-${item.id}`}
           >
             {/* Studio Product Shot Container */}

@@ -30,7 +30,7 @@ export const BrandMarquee: React.FC = () => {
       {/* Eyebrow Label */}
       <div className="text-center mb-6">
         <span className="font-sans text-[11px] tracking-[0.25em] text-muted-foreground font-semibold uppercase">
-          Authorized Inventory & Stockist Brands
+          Brands to ask us about
         </span>
       </div>
 
