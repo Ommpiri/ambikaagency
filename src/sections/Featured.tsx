@@ -6,7 +6,7 @@ import feat3 from '../assets/feat3.jpg';
 import feat4 from '../assets/feat4.jpg';
 import feat5 from '../assets/feat5.jpg';
 
-const products = [
+export const products = [
   { 
     id: 'f1', 
     category: 'PRAYAG & PIDILITE',
