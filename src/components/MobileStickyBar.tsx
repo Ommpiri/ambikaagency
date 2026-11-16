@@ -1,11 +1,13 @@
 import React from 'react';
-import { AskAmbika } from './AskAmbika';
+import { Link } from 'wouter';
 import { MessageCircle, MapPin } from 'lucide-react';
 
 export function MobileStickyBar() {
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-center select-none">
-      <AskAmbika />
+      <Link href="/ask-ambika" className="rounded-full bg-foreground px-4 py-3 text-sm font-semibold text-background shadow-lg">
+        Ask Ambika
+      </Link>
       {/* Top Circle: WhatsApp Chat Button */}
       <a
         href="https://wa.me/918144532282?text=Hello%20Ambika%20Agency,%20I%20have%20an%20inquiry%20regarding%20sanitaryware/pumps."

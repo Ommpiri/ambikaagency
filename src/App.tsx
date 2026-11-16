@@ -5,12 +5,15 @@ import { Route, Switch, Router as WouterRouter } from 'wouter';
 import Home from '@/pages/Home';
 import ReviewAssistant from '@/pages/ReviewAssistant';
 
+import { AskAmbika } from '@/components/AskAmbika';
+
 const queryClient = new QueryClient();
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/ask-ambika" component={AskAmbika} />
       <Route path="/review" component={ReviewAssistant} />
       <Route component={NotFound} />
     </Switch>
