@@ -1,68 +1,49 @@
-import React, { useRef, useState, useEffect, useLayoutEffect } from 'react';
+import React, { useRef, useEffect, useLayoutEffect } from 'react';
 import gsap from 'gsap';
-import { motion } from 'framer-motion';
+import heroPoster from '@/assets/hero.jpg';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 
 export function Hero() {
   const containerRef = useRef<HTMLElement>(null);
-  const videoARef = useRef<HTMLVideoElement>(null);
-  const videoBRef = useRef<HTMLVideoElement>(null);
-
-  // Dual-video crossfade state for 60fps buttery-smooth video looping (0 = Layer A, 1 = Layer B)
-  const [activeVideo, setActiveVideo] = useState<0 | 1>(0);
-  const [videoAOpacity, setVideoAOpacity] = useState(1);
-  const [videoBOpacity, setVideoBOpacity] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const videoA = videoARef.current;
-    const videoB = videoBRef.current;
-    if (!videoA || !videoB) return;
+    const video = videoRef.current;
+    const hero = containerRef.current;
+    if (!video || !hero) return;
 
-    // Start video playback at half speed for a cinematic feel
-    videoA.playbackRate = 0.5;
-    videoB.playbackRate = 0.5;
-    videoA.play().catch(() => {});
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let inView = false;
 
-    let isCrossfading = false;
-
-    const checkTime = () => {
-      const currentVideo = activeVideo === 0 ? videoA : videoB;
-      const targetTime = 7.3; // Trigger seamless crossfade 700ms before 8.0s mark
-
-      if (currentVideo && currentVideo.currentTime >= targetTime && !isCrossfading) {
-        isCrossfading = true;
-
-        if (activeVideo === 0) {
-          // Crossfade to Video B
-          videoB.currentTime = 0;
-          videoB.play().catch(() => {});
-          setVideoBOpacity(1);
-          setVideoAOpacity(0);
-
-          setTimeout(() => {
-            setActiveVideo(1);
-            videoA.pause();
-            isCrossfading = false;
-          }, 700);
-        } else {
-          // Crossfade to Video A
-          videoA.currentTime = 0;
-          videoA.play().catch(() => {});
-          setVideoAOpacity(1);
-          setVideoBOpacity(0);
-
-          setTimeout(() => {
-            setActiveVideo(0);
-            videoB.pause();
-            isCrossfading = false;
-          }, 700);
-        }
+    const syncPlayback = () => {
+      if (motionPreference.matches) {
+        video.pause();
+        video.removeAttribute('src');
+        video.load();
+      } else if (inView && !document.hidden) {
+        if (!video.hasAttribute('src')) video.src = `${import.meta.env.BASE_URL}hero-video.mp4`;
+        void video.play().catch(() => {});
+      } else {
+        video.pause();
       }
     };
 
-    const interval = setInterval(checkTime, 40);
-    return () => clearInterval(interval);
-  }, [activeVideo]);
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.intersectionRatio >= 0.1;
+      syncPlayback();
+    }, { threshold: 0.1 });
+
+    observer.observe(hero);
+    motionPreference.addEventListener('change', syncPlayback);
+    document.addEventListener('visibilitychange', syncPlayback);
+
+    return () => {
+      observer.disconnect();
+      motionPreference.removeEventListener('change', syncPlayback);
+      document.removeEventListener('visibilitychange', syncPlayback);
+      video.pause();
+    };
+  }, []);
 
   useLayoutEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -111,31 +92,15 @@ export function Hero() {
       className="relative w-full min-h-[100dvh] flex flex-col justify-between overflow-hidden bg-[#0a0a0a] text-white select-none pt-24 sm:pt-32 md:pt-40 pb-8 sm:pb-12"
       data-testid="section-hero"
     >
-      {/* ─── Dual-Video Background (Seamless 700ms Crossfade Looping) ─── */}
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden flex items-center justify-center bg-black">
-        {/* Layer A Video */}
+      <div className="absolute inset-0 z-0 overflow-hidden bg-black" aria-hidden="true">
         <video
-          ref={videoARef}
+          ref={videoRef}
+          poster={heroPoster}
           muted
           playsInline
-          style={{ opacity: videoAOpacity }}
-          className="absolute inset-0 w-full h-full object-cover object-center scale-100 brightness-[1.08] contrast-[1.05] saturate-[1.05] transition-opacity duration-700 ease-in-out"
-          data-testid="video-hero-layer-a"
-        >
-          <source src={`${import.meta.env.BASE_URL}hero-video.mp4#t=0,8`} type="video/mp4" />
-        </video>
-
-        {/* Layer B Video */}
-        <video
-          ref={videoBRef}
-          muted
-          playsInline
-          style={{ opacity: videoBOpacity }}
-          className="absolute inset-0 w-full h-full object-cover object-center scale-100 brightness-[1.08] contrast-[1.05] saturate-[1.05] transition-opacity duration-700 ease-in-out"
-          data-testid="video-hero-layer-b"
-        >
-          <source src={`${import.meta.env.BASE_URL}hero-video.mp4#t=0,8`} type="video/mp4" />
-        </video>
+          loop
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
 
         {/* Lighter gradients for a brighter hero while keeping text readable */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/10 to-black/20 z-10 pointer-events-none" />
@@ -171,7 +136,7 @@ export function Hero() {
 
             <button
               onClick={() => scrollToSection('contact')}
-              className="flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 bg-black/60 backdrop-blur-xl border border-white/30 text-white font-sans text-xs tracking-[0.2em] font-bold uppercase transition-all duration-300 hover:bg-white/20 active:scale-[0.98] cursor-pointer shadow-xl rounded-none w-full sm:w-auto"
+              className="flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 bg-black/70 border border-white/30 text-white font-sans text-xs tracking-[0.2em] font-bold uppercase transition-all duration-300 hover:bg-white/20 active:scale-[0.98] cursor-pointer shadow-xl rounded-none w-full sm:w-auto"
               data-testid="button-hero-contact"
             >
               <span>Showroom Inquiry</span>
@@ -199,12 +164,8 @@ export function Hero() {
           className="flex items-center gap-3 text-white/80 hover:text-white transition-colors cursor-pointer group"
           aria-label="Scroll to content"
         >
-          <div className="w-5 h-9 sm:w-6 sm:h-10 border border-white/40 rounded-full flex justify-center p-1 sm:p-1.5 group-hover:border-white transition-colors bg-black/30 backdrop-blur-sm">
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-              className="w-1 h-2 bg-white rounded-full"
-            />
+          <div className="w-5 h-9 sm:w-6 sm:h-10 border border-white/40 rounded-full flex justify-center p-1 sm:p-1.5 group-hover:border-white transition-colors bg-black/40">
+            <span className="h-2 w-1 rounded-full bg-white" />
           </div>
           <span className="font-sans text-[9px] sm:text-[10px] tracking-[0.25em] uppercase text-white/80 group-hover:text-white font-medium">
             Scroll to explore

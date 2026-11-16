@@ -18,7 +18,7 @@ export default function Home() {
       {/* Fixed Navigation Bar */}
       <Nav />
 
-      {/* ═══ HERO SECTION: Animated Video Hero (First 7s Loop) ═══ */}
+      {/* ═══ HERO SECTION: Animated Video Hero ═══ */}
       <Hero />
 
       {/* ═══ TRANSITION: Dark to light bridge ═══ */}
